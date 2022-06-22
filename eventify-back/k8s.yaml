@@ -10,15 +10,15 @@ data:
   LOGLEVEL: info
   SERVICEDIR: services
   TRANSPORTER: nats://nats:4222
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
 
 ---
 #########################################################
@@ -109,6 +109,34 @@ spec:
           - name: SERVICES
             value: greeter
 
+---
+#########################################################
+# User service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+spec:
+  selector:
+    matchLabels:
+      app: user
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+      - name: user
+        image: eventify-back
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: user
+
 
 ---
 #########################################################
@@ -152,9 +180,3 @@ spec:
         ports:
         - containerPort: 4222
           name: nats
-
-
-
-
-
-

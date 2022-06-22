@@ -36,6 +36,8 @@ services:
     environment:
       SERVICES: api
       PORT: 3000
+    volumes:
+      - ./eventify-back:/app
     depends_on:
       - nats
     labels:
@@ -52,6 +54,22 @@ services:
     env_file: ./eventify-back/docker-compose.env
     environment:
       SERVICES: greeter
+    volumes:
+      - ./eventify-back:/app
+    depends_on:
+      - nats
+    networks:
+      - internal
+
+  user:
+    build:
+      context: ./eventify-back
+      dockerfile: Dockerfile
+    env_file: ./eventify-back/docker-compose.env
+    environment:
+      SERVICES: user
+    volumes:
+      - ./eventify-back:/app
     depends_on:
       - nats
     networks:
@@ -59,6 +77,8 @@ services:
 
   nats:
     image: nats:2
+    volumes:
+      - ./eventify-back:/app
     networks:
       - internal
 
@@ -72,6 +92,7 @@ services:
       - 3000:80
       - 3001:8080
     volumes:
+      - ./eventify-back:/app
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - internal

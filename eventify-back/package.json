@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "My Moleculer-based microservices project",
   "scripts": {
-    "dev": "moleculer-runner --repl --hot services/**/*.service.js",
+    "build": "npm run clean && babel ./src --out-dir dist",
+    "dev": "babel-node node_modules/moleculer/bin/moleculer-runner.js --repl --hot services/**/*.service.js",
+    "dev-docker": "nodemon --watch services --watch models --exec \"rm -rf ./dist && mkdir -p dist/services && mkdir -p ./dist/models && /usr/local/lib/node_modules/@babel/cli/bin/babel.js ./models --out-dir ./dist/models --presets=@babel/preset-env && /usr/local/lib/node_modules/@babel/cli/bin/babel.js ./services --out-dir ./dist/services --presets=@babel/preset-env  && moleculer-runner --repl ./dist\"",
+    "babel-transpile": "/usr/local/lib/node_modules/@babel/cli/bin/babel.js ./models --out-dir ./dist/models --presets=@babel/preset-env && /usr/local/lib/node_modules/@babel/cli/bin/babel.js ./services --out-dir ./dist/services --presets=@babel/preset-env ",
     "start": "moleculer-runner",
+    "clean": "rm -rf ./dist && mkdir -p dist/services && mkdir -p ./dist/models",
     "cli": "moleculer connect NATS",
     "ci": "jest --watch",
     "test": "jest --coverage",
-    "lint": "eslint services",
-    "dc:up": "docker-compose up --build -d",
-    "dc:logs": "docker-compose logs -f",
-    "dc:down": "docker-compose down"
+    "lint": "eslint services"
   },
   "keywords": [
     "microservices",
@@ -19,15 +20,23 @@
   ],
   "author": "",
   "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.18.2",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
     "eslint": "^7.32.0",
     "jest": "^27.1.0",
     "jest-cli": "^27.1.0",
     "moleculer-repl": "^0.6.6"
   },
   "dependencies": {
+    "moleculer": "^0.14.16",
     "moleculer-web": "^0.10.2",
+    "mysql2": "^2.3.3",
     "nats": "^2.2.0",
-    "moleculer": "^0.14.16"
+    "sequelize": "^6.20.1"
   },
   "engines": {
     "node": ">= 12.x.x"

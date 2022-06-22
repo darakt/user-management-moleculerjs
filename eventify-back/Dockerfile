@@ -5,10 +5,13 @@ ENV NODE_ENV=production
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# COPY package.json package-lock.json ./
 
-RUN npm install --production
+RUN npm install -g nodemon @babel/core @babel/cli @babel/preset-env
 
 COPY . .
 
-CMD ["npm", "start"]
+RUN npm install
+
+
+CMD ["npm", "run", "dev-docker"]
