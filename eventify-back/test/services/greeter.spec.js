@@ -2,7 +2,7 @@
 
 const { ServiceBroker } = require("moleculer");
 const { ValidationError } = require("moleculer").Errors;
-const TestService = require("../../../services/greeter.service");
+const TestService = require("../../services/greeter.service");
 
 describe("Test 'greeter' service", () => {
 	let broker = new ServiceBroker({ logger: false });
@@ -15,7 +15,7 @@ describe("Test 'greeter' service", () => {
 
 		it("should return with 'Hello Moleculer'", async () => {
 			const res = await broker.call("greeter.hello");
-			expect(res).toBe("Hello Moleculer");
+			expect(res).toBe("Hello Moleculer   !!!!!");
 		});
 
 	});
@@ -39,4 +39,3 @@ describe("Test 'greeter' service", () => {
 	});
 
 });
-
